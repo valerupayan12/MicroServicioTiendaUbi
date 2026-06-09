@@ -14,7 +14,6 @@ import com.example.MicroTiendaUbicacion.model.Comuna;
 import com.example.MicroTiendaUbicacion.repository.ComunaRepository;
 
 import java.util.List;
-import java.util.concurrent.CompletionService;
 import java.util.stream.Collectors;
 
 @Slf4j

@@ -32,6 +32,11 @@ public class TiendaDTO {
                  message = "La direccion debe contener al menos 2 palabras")
         private String direccion;
 
+        public Object getId() {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'getId'");
+        }
+
 
     }
 
