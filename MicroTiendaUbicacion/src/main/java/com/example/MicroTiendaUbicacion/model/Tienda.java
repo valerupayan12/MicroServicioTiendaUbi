@@ -28,5 +28,9 @@ public class Tienda {
     @ManyToOne
     @JoinColumn(name="id_region", nullable=false)
     private Region region;
+    public void setId(Object id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setId'");
+    }
 
 }

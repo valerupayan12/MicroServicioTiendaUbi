@@ -28,5 +28,13 @@ public class HorarioTienda {
     private String dia_semana;
     private Time hora_apertura;
     private Time hora_cierre;
+    public Object getId() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getId'");
+    }
+    public void setId(Object id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setId'");
+    }
 
 }
