@@ -25,5 +25,24 @@ public class HorarioTiendaDTO {
     private String dia_semana;
     private Time hora_apertura;
     private Time hora_cierre;
+    public class Response {
+    }
+    public class Request {
+
+        public Time getHora_cierre() {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'getHora_cierre'");
+        }
+
+        public Time getHora_apertura() {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'getHora_apertura'");
+        }
+
+        public Object getId() {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'getId'");
+        }
+    }
 
 }

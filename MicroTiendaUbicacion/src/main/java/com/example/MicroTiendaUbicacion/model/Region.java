@@ -19,6 +19,10 @@ public class Region {
     private int id_region;
     @Column(name="nombre", nullable =false)
     private String nombre;
+    public void setId(Object id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setId'");
+    }
 
 
 }
