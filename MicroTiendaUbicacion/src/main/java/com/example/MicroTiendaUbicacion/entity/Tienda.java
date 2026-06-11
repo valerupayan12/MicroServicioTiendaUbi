@@ -36,6 +36,10 @@ public class Tienda {
     @Column(name = "activa", nullable = false)
     private Boolean activa = true;
 
+// Una tienda puede tener MUCHOS horarios (lunes, martes, etc.)
+// mappedBy = "tienda"  → le dice que la relación la maneja HorarioTienda (evita columna extra)
+// cascade = ALL        → si eliminas la tienda, se eliminan sus horarios también
+// fetch = LAZY         → los horarios NO se cargan de la BD hasta que los necesites (mejor rendimiento)
     @OneToMany(mappedBy = "tienda", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<HorarioTienda> horarios;
+    private List<HorarioTienda> horarios;   
 }
