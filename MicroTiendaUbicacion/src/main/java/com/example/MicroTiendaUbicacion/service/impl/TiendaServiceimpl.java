@@ -74,20 +74,19 @@ public class TiendaServiceImpl implements TiendaService {
         repository.deleteById(id);
     }
 
-    private TiendaDTO.Response toResponse(Tienda tienda) {
+private TiendaDTO.Response toResponse(Tienda tienda) {
 
-    TiendaDTO.Response response = new TiendaDTO.Response();
-
-    response.setId_tienda(tienda.getId_tienda());
-    response.setNombre(tienda.getNombre());
-    response.setDireccion(tienda.getDireccion());
-    response.setTelefono(tienda.getTelefono());
-    response.setCodigo_postal(tienda.getCodigo_postal());
-    response.setActiva(tienda.getActiva());
-    response.setId_comuna(tienda.getId_comuna());
-    response.setId_region(tienda.getId_region());
-
-    return response;
-        }
+    return new TiendaDTO.Response(
+            tienda.getId_tienda(),
+            tienda.getNombre(),
+            tienda.getDireccion(),
+            tienda.getTelefono(),
+            tienda.getCodigo_postal(),
+            tienda.getActiva(),
+            tienda.getId_comuna(),
+            tienda.getId_region(),
+            null
+    );
+    }
 
 }
