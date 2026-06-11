@@ -1,62 +1,118 @@
 package com.example.MicroTiendaUbicacion.service.impl;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.example.MicroTiendaUbicacion.dto.HorarioTiendaDTO;
-import com.example.MicroTiendaUbicacion.model.HorarioTienda;
-import com.example.MicroTiendaUbicacion.repository.HorarioTiendaRepository;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
+import org.springframework.stereotype.Service;
+
+import com.example.MicroTiendaUbicacion.dto.HorarioTiendaDTO;
+import com.example.MicroTiendaUbicacion.entity.HorarioTienda;
+import com.example.MicroTiendaUbicacion.entity.Tienda;
+import com.example.MicroTiendaUbicacion.repository.HorarioTiendaRepository;
+import com.example.MicroTiendaUbicacion.repository.TiendaRepository;
+import com.example.MicroTiendaUbicacion.service.HorarioTiendaService;
+
 @Service
-@RequiredArgsConstructor
-public class HorarioTiendaServiceimpl implements HorarioTiendaService {
+public class HorarioTiendaServiceImpl implements HorarioTiendaService {
 
-    private final HorarioTiendaRepository horarioTiendaRepository;
+    private final HorarioTiendaRepository horarioRepository;
+    private final TiendaRepository tiendaRepository;
 
-    @Transactional(readOnly = true)
-    public List<HorarioTiendaDTO.Response> listarTodos() {
-        return horarioTiendaRepository.findAll().stream().map(this::mapToResponse).collect(Collectors.toList());
+    public HorarioTiendaServiceImpl(
+            HorarioTiendaRepository horarioRepository,
+            TiendaRepository tiendaRepository) {
+
+        this.horarioRepository = horarioRepository;
+        this.tiendaRepository = tiendaRepository;
     }
 
-    @Transactional(readOnly = true)
-    public HorarioTiendaDTO.Response buscarPorId(int id) {
-        HorarioTienda h = horarioTiendaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Horario de tienda no encontrado con id: " + id));
-        return mapToResponse(h);
+    @Override
+    public List<HorarioTiendaDTO.Response> listar() {
+
+        return horarioRepository.findAll()
+                .stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
     }
 
-    @Transactional
-    public HorarioTiendaDTO.Response crear(HorarioTiendaDTO.Request request) {
-        HorarioTienda h = new HorarioTienda();
-        h.setId(request.getId());
-        h.setHora_apertura(request.getHora_apertura());
-        h.setHora_cierre(request.getHora_cierre());
-        return mapToResponse(horarioTiendaRepository.save(h));
+    @Override
+    public HorarioTiendaDTO.Response buscarPorId(Integer id) {
+
+        HorarioTienda horario = horarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Horario no encontrado"));
+
+        return toResponse(horario);
     }
 
-    @Transactional
-    public HorarioTiendaDTO.Response actualizar(int id, HorarioTiendaDTO.Request request) {
-        HorarioTienda h = horarioTiendaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Horario de tienda no encontrado con id: " + id));
-        h.setHora_apertura(request.getHora_apertura());
-        h.setHora_cierre(request.getHora_cierre());
-        return mapToResponse(horarioTiendaRepository.save(h));
+   @Override
+    public HorarioTiendaDTO.Response guardar(HorarioTiendaDTO.Request request) {
+
+    Tienda tienda = tiendaRepository.findById(request.getId_tienda())
+            .orElseThrow(() -> new RuntimeException("Tienda no encontrada"));
+
+    HorarioTienda horario = new HorarioTienda();
+
+    horario.setTienda(tienda);
+
+    horario.setDia_semana(
+            HorarioTienda.DiaSemana.valueOf(
+                    request.getDia_semana().toUpperCase()
+            )
+    );
+
+    horario.setHora_apertura(request.getHora_apertura());
+    horario.setHora_cierre(request.getHora_cierre());
+    horario.setCerrado(request.getCerrado());
+
+    return toResponse(horarioRepository.save(horario));
+    }
+    
+    @Override
+    public HorarioTiendaDTO.Response actualizar(Integer id, HorarioTiendaDTO.Request request) {
+
+    HorarioTienda horario = horarioRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Horario no encontrado"));
+
+    Tienda tienda = tiendaRepository.findById(request.getId_tienda())
+            .orElseThrow(() -> new RuntimeException("Tienda no encontrada"));
+
+    horario.setTienda(tienda);
+
+    horario.setDia_semana(
+            HorarioTienda.DiaSemana.valueOf(
+                    request.getDia_semana().toUpperCase()
+            )
+    );
+
+    horario.setHora_apertura(request.getHora_apertura());
+    horario.setHora_cierre(request.getHora_cierre());
+    horario.setCerrado(request.getCerrado());
+
+    return toResponse(horarioRepository.save(horario));
+}
+    @Override
+    public void eliminar(Integer id) {
+        horarioRepository.deleteById(id);
     }
 
-    @Transactional
-    public void eliminar(int id) {
-        if (!horarioTiendaRepository.existsById(id))
-            throw new RuntimeException("Horario de tienda no encontrado con id: " + id);
-        horarioTiendaRepository.deleteById(id);
+    @Override
+    public List<HorarioTiendaDTO.Response> buscarPorTienda(Integer id_tienda) {
+
+        return horarioRepository.findByTiendaIdTienda(id_tienda)
+                .stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
     }
 
-    private HorarioTiendaDTO.Response mapToResponse(HorarioTienda h) {
-        return new HorarioTiendaDTO.Response();
-    }
+   private HorarioTiendaDTO.Response toResponse(HorarioTienda horario) {
+
+    return new HorarioTiendaDTO.Response(
+            horario.getId_horario(),
+            horario.getTienda().getId_tienda(),
+            horario.getDia_semana().name(),
+            horario.getHora_apertura(),
+            horario.getHora_cierre(),
+            horario.getCerrado()
+    );
+}
 }

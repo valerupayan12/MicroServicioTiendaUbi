@@ -1,66 +1,93 @@
 package com.example.MicroTiendaUbicacion.service.impl;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-import org.jspecify.annotations.Nullable;
-import org.springframework.security.core.token.Token;
-import org.springframework.security.core.token.TokenService;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.example.MicroTiendaUbicacion.dto.TiendaDTO;
-import com.example.MicroTiendaUbicacion.model.Tienda;
-import com.example.MicroTiendaUbicacion.repository.TiendaRepository;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
+import org.springframework.stereotype.Service;
+
+import com.example.MicroTiendaUbicacion.dto.TiendaDTO;
+import com.example.MicroTiendaUbicacion.entity.Tienda;
+import com.example.MicroTiendaUbicacion.repository.TiendaRepository;
+import com.example.MicroTiendaUbicacion.service.TiendaService;
+
 @Service
-@RequiredArgsConstructor
-public class TiendaServiceimpl  implements TokenService {
+public class TiendaServiceImpl implements TiendaService {
 
-    private final TiendaRepository tiendaRepository;
+    private final TiendaRepository repository;
 
-    @Transactional(readOnly = true)
-    public List<TiendaDTO.Response> listarTodos() {
-        return tiendaRepository.findAll().stream().max(this::mapToResponse).collect(Collectors.toList());
+    public TiendaServiceImpl(TiendaRepository repository) {
+        this.repository = repository;
     }
 
-    @Transactional(readOnly = true)
-    public TiendaDTO.Response buscarPorId(int id) {
-        Tienda t = tiendaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tienda no encontrada con id: " + id));
-        return mapToResponse(t);
+    @Override
+    public List<TiendaDTO.Response> listar() {
+        return repository.findAll()
+                .stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
     }
 
-    @Transactional
-    public TiendaDTO.Response crear(TiendaDTO.Request request) {
-        Tienda t = new Tienda();
-        t.setId(request.getId());
-        t.setNombre(request.getNombre());
-        return mapToResponse(tiendaRepository.save(t));
+    @Override
+    public TiendaDTO.Response buscarPorId(Integer id) {
+
+        Tienda tienda = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Tienda no encontrada"));
+
+        return toResponse(tienda);
     }
 
-    @Transactional
-    public TiendaDTO.Response actualizar(int id, TiendaDTO.Request request) {
-        Tienda t = tiendaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tienda no encontrada con id: " + id));
-        t.setId(request.getId());
-        t.setNombre(request.getNombre());
-        return mapToResponse(tiendaRepository.save(t));
+    @Override
+    public TiendaDTO.Response guardar(TiendaDTO.Request request) {
+
+        Tienda tienda = new Tienda();
+
+        tienda.setNombre(request.getNombre());
+        tienda.setDireccion(request.getDireccion());
+        tienda.setTelefono(request.getTelefono());
+        tienda.setId_comuna(request.getId_comuna());
+        tienda.setId_region(request.getId_region());
+        tienda.setCodigo_postal(request.getCodigo_postal());
+        tienda.setActiva(request.getActiva());
+
+        return toResponse(repository.save(tienda));
     }
 
-    @Transactional
-    public void eliminar1(int id) {
-        if (!tiendaRepository.existsById(id))
-            throw new RuntimeException("Tienda no encontrada con id: " + id);
-        tiendaRepository.deleteById(id);
+    @Override
+    public TiendaDTO.Response actualizar(Integer id, TiendaDTO.Request request) {
+
+        Tienda tienda = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Tienda no encontrada"));
+
+        tienda.setNombre(request.getNombre());
+        tienda.setDireccion(request.getDireccion());
+        tienda.setTelefono(request.getTelefono());
+        tienda.setId_comuna(request.getId_comuna());
+        tienda.setId_region(request.getId_region());
+        tienda.setCodigo_postal(request.getCodigo_postal());
+        tienda.setActiva(request.getActiva());
+
+        return toResponse(repository.save(tienda));
     }
 
-    private TiendaDTO.Response mapToResponse(Tienda t) {
-        return new TiendaDTO.Response(
-                t.getId(), t.getNombre());
+    @Override
+    public void eliminar(Integer id) {
+        repository.deleteById(id);
     }
+
+    private TiendaDTO.Response toResponse(Tienda tienda) {
+
+    TiendaDTO.Response response = new TiendaDTO.Response();
+
+    response.setId_tienda(tienda.getId_tienda());
+    response.setNombre(tienda.getNombre());
+    response.setDireccion(tienda.getDireccion());
+    response.setTelefono(tienda.getTelefono());
+    response.setCodigo_postal(tienda.getCodigo_postal());
+    response.setActiva(tienda.getActiva());
+    response.setId_comuna(tienda.getId_comuna());
+    response.setId_region(tienda.getId_region());
+
+    return response;
+        }
+
 }
