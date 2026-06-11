@@ -3,55 +3,65 @@ package com.example.MicroTiendaUbicacion.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.example.MicroTiendaUbicacion.model.HorarioTienda;
+import com.example.MicroTiendaUbicacion.dto.HorarioTiendaDTO;
 import com.example.MicroTiendaUbicacion.service.HorarioTiendaService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@SuppressWarnings("unused")
 @RestController
-@RequestMapping("api/v2/horarios_tienda")
+@RequestMapping("/api/v2/horarios_tienda")
+@Tag(name = "Horarios de Tienda", description = "API para la gestión de horarios de las tiendas")
 public class HorarioTiendaController {
+
     @Autowired
-        private HorarioTiendaService horarioTiendaService;
+    private HorarioTiendaService horarioTiendaService;
 
-        @GetMapping
-        public List<HorarioTienda> listarHorariosTienda(){
-            return horarioTiendaService.getHorarioTienda();
-        }
+    @Operation(summary = "Listar todos los horarios")
+    @GetMapping
+    public List<HorarioTiendaDTO.Response> listar() {
+        return horarioTiendaService.listar();
+    }
 
-    //agregar
+    @Operation(summary = "Buscar horario por ID")
+    @GetMapping("/{id}")
+    public HorarioTiendaDTO.Response buscarPorId(@PathVariable Integer id) {
+        return horarioTiendaService.buscarPorId(id);
+    }
+
+    @Operation(summary = "Listar horarios de una tienda")
+    @GetMapping("/tienda/{id_tienda}")
+    public List<HorarioTiendaDTO.Response> buscarPorTienda(
+            @PathVariable Integer id_tienda) {
+
+        return horarioTiendaService.buscarPorTienda(id_tienda);
+    }
+
+    @Operation(summary = "Registrar un horario")
     @PostMapping
-    public HorarioTienda agregarHorarioTienda(@Valid @RequestBody HorarioTienda horarioTienda){
-        return horarioTiendaService.saveHorarioTienda(horarioTienda);
-     }
-    //buscar
-    @GetMapping("/{id_horario_tienda}")
-    public HorarioTienda buscarHorarioTienda(@PathVariable int id_horario_tienda){
-           return horarioTiendaService.getHorarioTiendaById(id_horario_tienda); 
-        }
-    //actualizar
-    @PutMapping("/{id_horario_tienda}")
-    public int actualizarHorarioTienda(@PathVariable int id_horario_tienda, @Valid @RequestBody HorarioTienda horarioTienda){
-        return horarioTiendaService.updateHorarioTienda(horarioTienda);
-    }
-    //eliminar
-    @DeleteMapping("/{id_horario_tienda}")
-    public String eliminarHorarioTienda(@PathVariable int id_horario_tienda){
-        if (horarioTiendaService.deleteHorarioTienda(id_horario_tienda)== 1) {
-            return "Horario de tienda eliminado correctamente";
-        }
-        return "Error al eliminar el horario de tienda";
+    public HorarioTiendaDTO.Response guardar(
+            @Valid @RequestBody HorarioTiendaDTO.Request request) {
+
+        return horarioTiendaService.guardar(request);
     }
 
+    @Operation(summary = "Actualizar un horario")
+    @PutMapping("/{id}")
+    public HorarioTiendaDTO.Response actualizar(
+            @PathVariable Integer id,
+            @Valid @RequestBody HorarioTiendaDTO.Request request) {
 
+        return horarioTiendaService.actualizar(id, request);
+    }
+
+    @Operation(summary = "Eliminar un horario")
+    @DeleteMapping("/{id}")
+    public String eliminar(@PathVariable Integer id) {
+
+        horarioTiendaService.eliminar(id);
+        return "Horario eliminado correctamente";
+    }
 }

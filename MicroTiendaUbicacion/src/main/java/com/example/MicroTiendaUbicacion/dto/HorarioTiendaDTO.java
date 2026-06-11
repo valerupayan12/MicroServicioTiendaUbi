@@ -1,48 +1,46 @@
 package com.example.MicroTiendaUbicacion.dto;
 
-import java.sql.Time;
-
-import com.example.MicroTiendaUbicacion.model.Tienda;
-
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalTime;
 
-@Data 
-@AllArgsConstructor
-@NoArgsConstructor
 public class HorarioTiendaDTO {
 
-    @NotBlank(message = "el horario de tienda es obligatorio")
-        @Size(min = 3, max = 10, message = "El ID debe tener entre 3 y 10 caracteres")
-        private int id_horario_tienda;
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Request {
 
-    private int id_horario;
-    private Tienda tienda;
-    private String dia_semana;
-    private Time hora_apertura;
-    private Time hora_cierre;
-    public class Response {
-    }
-    public class Request {
+        private Integer id_horario;
 
-        public Time getHora_cierre() {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'getHora_cierre'");
-        }
+        @NotNull(message = "El id de la tienda es obligatorio")
+        private Integer id_tienda;
 
-        public Time getHora_apertura() {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'getHora_apertura'");
-        }
+        @NotNull(message = "El día de la semana es obligatorio")
+        private String dia_semana;
 
-        public Object getId() {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'getId'");
-        }
+        @NotNull(message = "La hora de apertura es obligatoria")
+        private LocalTime hora_apertura;
+
+        @NotNull(message = "La hora de cierre es obligatoria")
+        private LocalTime hora_cierre;
+
+        private Boolean cerrado = false;
     }
 
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Response {
+
+        private Integer id_horario;
+        private Integer id_tienda;
+        private String dia_semana;
+        private LocalTime hora_apertura;
+        private LocalTime hora_cierre;
+        private Boolean cerrado;
+    }
 }
