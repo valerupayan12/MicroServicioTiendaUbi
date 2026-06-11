@@ -10,19 +10,12 @@ import com.example.MicroTiendaUbicacion.entity.Tienda;
 @Repository
 public interface TiendaRepository extends JpaRepository<Tienda, Integer> {
 
-    // Buscar tiendas activas
     List<Tienda> findByActivaTrue();
 
-    // Buscar por nombre
     List<Tienda> findByNombreContainingIgnoreCase(String nombre);
+        List<Tienda> findByIdRegion(Integer idRegion);
 
-    // Buscar por comuna
-    List<Tienda> findByIdComuna(Integer id_comuna);
+    List<Tienda> findByIdComuna(Integer idComuna);
 
-    // Buscar por región
-    List<Tienda> findByIdRegion(Integer id_region);
-
-    // Buscar tiendas activas de una región
-    List<Tienda> findByIdRegionAndActivaTrue(Integer id_region);
-
+    List<Tienda> findByIdRegionAndActivaTrue(Integer idRegion);
 }

@@ -23,13 +23,11 @@ public class Tienda {
 
     @Column(name = "telefono", length = 20)
     private String telefono;
+    @Column(name = "id_region", nullable = false)
+    private Integer idRegion;
 
     @Column(name = "id_comuna", nullable = false)
-    private Integer id_comuna;
-
-    @Column(name = "id_region", nullable = false)
-    private Integer id_region;
-
+    private Integer idComuna;
     @Column(name = "codigo_postal", length = 10)
     private String codigo_postal;
 

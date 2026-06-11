@@ -3,6 +3,8 @@ package com.example.MicroTiendaUbicacion.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.MicroTiendaUbicacion.entity.HorarioTienda;
@@ -10,10 +12,9 @@ import com.example.MicroTiendaUbicacion.entity.HorarioTienda;
 @Repository
 public interface HorarioTiendaRepository extends JpaRepository<HorarioTienda, Integer> {
 
-    // Buscar horarios por tienda
-    List<HorarioTienda> findByTiendaIdTienda(Integer id_tienda);
+    @Query("SELECT h FROM HorarioTienda h WHERE h.tienda.id_tienda = :id_tienda")
+    List<HorarioTienda> findByTienda(@Param("id_tienda") Integer id_tienda);
 
-    // Buscar horarios abiertos
     List<HorarioTienda> findByCerradoFalse();
 
 }

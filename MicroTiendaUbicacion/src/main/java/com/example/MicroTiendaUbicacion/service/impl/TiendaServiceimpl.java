@@ -44,8 +44,8 @@ public class TiendaServiceImpl implements TiendaService {
         tienda.setNombre(request.getNombre());
         tienda.setDireccion(request.getDireccion());
         tienda.setTelefono(request.getTelefono());
-        tienda.setId_comuna(request.getId_comuna());
-        tienda.setId_region(request.getId_region());
+        tienda.setIdComuna(request.getId_comuna());
+        tienda.setIdRegion(request.getId_region());
         tienda.setCodigo_postal(request.getCodigo_postal());
         tienda.setActiva(request.getActiva());
 
@@ -61,8 +61,8 @@ public class TiendaServiceImpl implements TiendaService {
         tienda.setNombre(request.getNombre());
         tienda.setDireccion(request.getDireccion());
         tienda.setTelefono(request.getTelefono());
-        tienda.setId_comuna(request.getId_comuna());
-        tienda.setId_region(request.getId_region());
+        tienda.setIdComuna(request.getId_comuna());
+        tienda.setIdRegion(request.getId_region());
         tienda.setCodigo_postal(request.getCodigo_postal());
         tienda.setActiva(request.getActiva());
 
@@ -83,8 +83,8 @@ private TiendaDTO.Response toResponse(Tienda tienda) {
             tienda.getTelefono(),
             tienda.getCodigo_postal(),
             tienda.getActiva(),
-            tienda.getId_comuna(),
-            tienda.getId_region(),
+            tienda.getIdComuna(),
+            tienda.getIdRegion(),
             null
     );
     }

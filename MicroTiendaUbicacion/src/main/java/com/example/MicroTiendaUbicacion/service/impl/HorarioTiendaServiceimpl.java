@@ -96,14 +96,13 @@ public class HorarioTiendaServiceImpl implements HorarioTiendaService {
     }
 
     @Override
-    public List<HorarioTiendaDTO.Response> buscarPorTienda(Integer id_tienda) {
+public List<HorarioTiendaDTO.Response> buscarPorTienda(Integer id_tienda) {
 
-        return horarioRepository.findByTiendaIdTienda(id_tienda)
-                .stream()
-                .map(this::toResponse)
-                .collect(Collectors.toList());
-    }
-
+    return horarioRepository.findByTienda(id_tienda)
+            .stream()
+            .map(this::toResponse)
+            .collect(Collectors.toList());
+}
    private HorarioTiendaDTO.Response toResponse(HorarioTienda horario) {
 
     return new HorarioTiendaDTO.Response(
