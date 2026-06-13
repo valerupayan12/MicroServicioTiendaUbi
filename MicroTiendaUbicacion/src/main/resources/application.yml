@@ -1,7 +1,6 @@
 spring:
   application:
-    name: ms-producto
-
+    name: ms-tiendaubicacion
 ---
 # Perfil local (XAMPP)
 spring:
@@ -19,7 +18,7 @@ spring:
   flyway:
     enabled: false
 server:
-  port: 8083
+  port: 8090
 eureka:
   client:
     service-url:
@@ -44,7 +43,7 @@ spring:
   flyway:
     enabled: false
 server:
-  port: ${PORT:8083}
+  port: ${PORT:8090}
 eureka:
   client:
     service-url:
