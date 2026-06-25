@@ -1,4 +1,4 @@
-package com.example.MicroTiendaUbicacion.service.Impl;
+package com.example.MicroTiendaUbicacion.service.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,12 +13,12 @@ import com.example.MicroTiendaUbicacion.repository.TiendaRepository;
 import com.example.MicroTiendaUbicacion.service.HorarioTiendaService;
 
 @Service
-public class HorarioTiendaServiceimpl implements HorarioTiendaService {
+public class HorarioTiendaServiceimpls  implements HorarioTiendaService {
 
     private final HorarioTiendaRepository horarioRepository;
     private final TiendaRepository tiendaRepository;
 
-    public HorarioTiendaServiceimpl(
+    public HorarioTiendaServiceimpls(
             HorarioTiendaRepository horarioRepository,
             TiendaRepository tiendaRepository) {
 

@@ -37,9 +37,4 @@ public class HorarioTienda {
         LUNES, MARTES, MIERCOLES, JUEVES,
         VIERNES, SABADO, DOMINGO
     }
-
-    public void setIdTipo(int i) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setIdTipo'");
-    }
 }
